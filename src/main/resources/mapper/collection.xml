@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.ICollectionDao">
+
+    <update id="updateBind">
+        UPDATE collection_bind
+        SET flag  = #{flag},
+            update_time = now()
+        WHERE
+        username = #{username} AND
+        userhost = #{userhost} AND
+        bindname = #{bindname} AND
+        bindhost = #{bindhost};
+    </update>
+
+    <insert id="insertBind">
+        INSERT INTO collection_bind
+        (username, userhost, bindname, bindhost, flag)
+        VALUES (#{username}, #{userhost}, #{bindname}, #{bindhost}, #{flag});
+    </insert>
+
+    <select id="selectBind"
+            resultType="com.qunar.qchat.dao.model.QCollection">
+        select
+          a.bindname, a.bindhost, a.flag, b.url, c.user_name
+        from
+          (select bindname, bindhost, flag from collection_bind where username =#{username} and userhost=#{userhost}) as a
+        left join
+          vcard_version as b
+          on (a.bindname = b.username and a.bindhost = b.host)
+        left join
+          (select a.host, b.user_id, b.user_name from host_info as a join host_users as b on (a.id = b.host_id)) as c
+          on (a.bindname = c.user_id and a.bindhost=c.host);
+    </select>
+
+    <select id="selectVcard"
+            parameterType="java.util.List" resultType="com.qunar.qchat.dao.model.QCollectionVcard">
+      select  u.user_id as username, h.host as domain, u.user_name as usernick, coalesce(v.url, '/file/v2/download/perm/bc0fca9b398a0e4a1f981a21e7425c7a.png')  as url , coalesce(v.version, 0) as version from host_users u left join host_info h on u.host_id = h.id left join vcard_version v on u.user_id = v.username where
+        <foreach collection="where" index="index" item="item" open="(" separator=" or " close=")">
+          u.user_id = #{item.u} and h.host = #{item.d} and (v.version > #{item.v} or v.version is null)
+        </foreach>
+    </select>
+
+    <select id="selectMucVcard"
+            parameterType="java.util.List" resultType="com.qunar.qchat.dao.model.QCollectionMucVcard">
+        select  muc_name, show_name, muc_desc, muc_title, case muc_pic when '' then '/file/v2/download/perm/bc0fca9b398a0e4a1f981a21e7425c7a.png' when null then 'file/v2/download/perm/bc0fca9b398a0e4a1f981a21e7425c7a.png' else muc_pic end as muc_pic, coalesce(version, 0) from muc_vcard_info where
+        <foreach collection="where" index="index" item="item" open="(" separator=" or " close=")">
+            muc_name = #{item.m} and (version > #{item.v} or version is null)
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.IDomainAdminDao">
+    <resultMap id="domaininfo" type="com.qunar.qchat.dao.model.DomainInfo">
+        <!-- 用result属性来映射非主键字段 -->
+        <result property="host" column="host"/>
+        <result property="title" column="description"/>
+        <result property="desc" column="description"/>
+    </resultMap>
+
+
+    <select id="selectOneByDomainName"
+            parameterType="String"
+            resultMap="domaininfo"
+            >
+        SELECT
+            host,description
+        FROM host_info
+        WHERE host=#{domain}
+    </select>
+
+    <select id="selectAllDomainNames"
+            resultMap="domaininfo">
+        SELECT DISTINCT host
+        FROM host_info;
+    </select>
+</mapper>

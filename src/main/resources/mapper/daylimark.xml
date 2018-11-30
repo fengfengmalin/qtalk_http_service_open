@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.IDayliMarkDao">
+
+    <resultMap id="dailymark" type="com.qunar.qchat.dao.model.DailyMarkModule">
+        <!-- 用result属性来映射非主键字段 -->
+
+        <result property="ip" column="ip"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="userid" column="userid"/>
+        <result property="domain" column="domain_name"/>
+        <result property="description" column="description"/>
+        <result property="create_time" column="create_time"/>
+        <result property="location" column="location"/>
+        <result property="day" column="d"/>
+        <result property="timestamp" column="ts"/>
+    </resultMap>
+
+    <insert id="insertMarkItem" parameterType="passwordEntity">
+        insert into dailymark(ip,longitude,latitude,userid,domain_name,description,location)
+        values(#{ip}::ip4r, #{longitude}, #{latitude}, #{userid}, #{domain}, #{description},#{location})
+    </insert>
+
+
+    <select
+            id="selectMarksInrange"
+            parameterType="passwordEntity"
+            resultMap="dailymark"
+    >
+        select id,ip,longitude,latitude,userid,domain_name,description ,location ,create_time ,to_char(create_time, 'YYYY-MM-DD') as d,floor(extract(epoch from(create_time))*1000) as ts
+        from  dailymark
+        where  userid=#{userid} and domain_name=#{domain} and  create_time >= #{beginDay}::timestamp and  ( #{endDay}::timestamp + interval '1 day') > create_time
+        order by create_time;
+    </select>
+
+
+    <select id="selectMarksOneDay"
+            parameterType="passwordEntity"
+            resultMap="dailymark"
+    >
+        select id,ip,longitude,latitude,userid,domain_name,description ,location ,create_time ,to_char(create_time, 'YYYY-MM-DD') as d,floor(extract(epoch from(create_time))*1000) as ts
+        from  dailymark
+        where  userid=#{userid} and domain_name=#{domain} and to_char(create_time, 'YYYY-MM-DD') = #{oneDay}
+        order by create_time;
+    </select>
+</mapper>

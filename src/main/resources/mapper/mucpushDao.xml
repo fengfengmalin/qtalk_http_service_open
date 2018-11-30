@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.IMucPushDao">
+
+    <select id="selectSubscribeFlag"
+            resultType="com.qunar.qchat.dao.model.QMucPush">
+        SELECT
+        muc_name,
+        subscribe_flag,
+        #{domain} as domain
+        FROM muc_room_users
+        WHERE username=#{username} and host=#{host};
+
+    </select>
+
+
+    
+    <select id="selectSubscribeFlagbyMuc"
+                resultType="com.qunar.qchat.dao.model.QMucPush">
+	SELECT
+        muc_name,
+        subscribe_flag,
+        #{domain} as domain
+        FROM muc_room_users
+        WHERE username=#{username} and host=#{host} and muc_name in ( ${mucs});
+    </select>
+
+
+</mapper>

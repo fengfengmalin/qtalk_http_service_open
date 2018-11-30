@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="passwordEntity" type="com.qunar.qchat.dao.model.PasswordModule"/>
+        <typeAlias alias="passwordHistoryEntity" type="com.qunar.qchat.dao.model.PasswordHistoryModule"/>
+        <typeAlias alias="QCloudMain" type="com.qunar.qchat.dao.model.QCloudMain"/>
+        <typeAlias alias="QCloudSub" type="com.qunar.qchat.dao.model.QCloudSub"/>
+        <typeAlias alias="QCloudMainHistory" type="com.qunar.qchat.dao.model.QCloudMainHistory"/>
+        <typeAlias alias="QCloudSubHistory" type="com.qunar.qchat.dao.model.QCloudSubHistory"/>
+        <typeAlias alias="QGetMsg" type="com.qunar.qchat.dao.model.QGetMsg"/>
+        <typeAlias alias="QGetMucMsg" type="com.qunar.qchat.dao.model.QGetMucMsg"/>
+        <typeAlias alias="QMucTime" type="com.qunar.qchat.dao.model.QMucTime"/>
+        <typeAlias alias="SmsLog" type="com.qunar.qchat.dao.model.SmsLog"/>
+        <typeAlias alias="LeaderboardsItem" type="com.qunar.qchat.dao.model.LeaderboardsItem"/>
+        <typeAlias alias="GetRblMucMsg" type="com.qunar.qchat.dao.model.GetRblMucMsg"/>
+        <typeAlias alias="GetRblMsg" type="com.qunar.qchat.dao.model.GetRblMsg"/>
+
+    </typeAliases>
+</configuration>

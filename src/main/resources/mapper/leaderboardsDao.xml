@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.ILeaderboardsDao">
+
+    <select id="selectDayRankingList"
+            resultType="LeaderboardsItem">
+        SELECT
+        a.rank as rank,
+        a.m_from as userName,
+        b.name as name,
+        b.department as department,
+        a.sum as msgCount
+        FROM (
+          SELECT
+          rank() over(order by sum desc ),
+          *
+          FROM (
+            SELECT
+            m_from,
+            sum(count)
+            FROM msg_stat
+            WHERE reportdate > current_date - interval '2 day'
+            and m_from not in (select nickname from non_human)
+            GROUP BY m_from
+            ORDER BY sum(count) desc limit #{limit}
+          ) as foo
+        ) a
+        LEFT JOIN users b ON a.m_from = b.username;
+    </select>
+
+    <select id="selectAllRankingList"
+            resultType="LeaderboardsItem">
+        SELECT
+        a.rank AS rank,
+        a.m_from AS userName,
+        b.name AS name,
+        b.department AS department,
+        a.sum AS msgCount
+        FROM (
+          SELECT
+          rank() over(order by sum desc ),
+          *
+          FROM (
+            SELECT
+            m_from,
+            sum(count)
+            FROM msg_stat
+            WHERE m_from not in (select nickname from non_human)
+            GROUP BY m_from order by sum(count) desc limit #{limit}
+          ) as foo
+        ) a
+        LEFT JOIN users b ON a.m_from = b.username;
+    </select>
+
+</mapper>

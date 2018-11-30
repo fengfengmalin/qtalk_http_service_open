@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.IUpdateOrganizationDao">
+
+    <insert id="insertHostUser">
+        INSERT INTO host_users
+        (host_id,user_id,user_name,department,
+            dep1,dep2,dep3,dep4,dep5,
+            pinyin,user_type,hire_flag,
+            gender,password,ps_deptid,version)
+        VALUES (#{host_id}, #{user_id},#{user_name}, #{department},
+         #{dep1}, #{dep2}, #{dep3}, #{dep4}, #{dep5},
+         hanzi_to_pinyin(#{user_name}),#{user_type},#{hire_flag},
+         #{gender},#{password},#{ps_deptid},#{version}
+        );
+    </insert>
+
+    <select id="getMaxVersion"
+            resultType="String">
+        SELECT
+        max(version)
+        FROM host_users
+        WHERE  host_id = #{host_id} ;
+    </select>
+</mapper>

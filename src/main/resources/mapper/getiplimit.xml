@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.qchat.dao.IPlimitDao">
+
+    <select id="select_ip_limit"
+            parameterType="java.util.List"   resultType="com.qunar.qchat.dao.model.QIplimit">
+        SELECT
+        ip,
+        name,
+        priority
+        from iplimit where priority = '100';
+    </select>
+
+
+</mapper>
